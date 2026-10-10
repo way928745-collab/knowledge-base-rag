@@ -1,0 +1,8 @@
+kb_path: ./kb-data
+
+collection_name: knowledge_base
+
+# 本地向量模型。如果下载失败可改为 BAAI/bge-small-zh-v1.5。
+embedding_model: BAAI/bge-small-zh-v1.5
+
+device: auto

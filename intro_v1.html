@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>企业级 RAG 知识库 · 介绍</title>
+<style>
+:root{--bg:#0e1320;--card:#161d2e;--tx:#e6ebf5;--mut:#93a0b8;--ac:#5aa9ff;--ok:#3ddc97;--warn:#ffb454;--line:#26314a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.75}
+.wrap{max-width:980px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:34px;margin:0 0 6px}.sub{color:var(--mut);font-size:17px;margin-bottom:36px}
+h2{font-size:22px;margin:44px 0 14px;color:var(--ac)}h2 .ic{margin-right:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}th{background:#1c2740;color:var(--ac)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+ul{margin:8px 0;padding-left:22px}li{margin:6px 0}
+em{color:var(--mut);font-style:normal;font-size:13px}strong{color:#fff}.ok{color:var(--ok)}.warn{color:var(--warn)}
+.foot{margin-top:56px;padding-top:20px;border-top:1px dashed var(--line);color:var(--mut);font-size:14px}
+.bar{display:flex;align-items:center;gap:12px;margin:9px 0}.bar span{width:130px;font-size:14px;color:var(--mut)}
+.track{flex:1;height:18px;background:#1c2740;border-radius:9px}.fill{height:18px;border-radius:9px;background:linear-gradient(90deg,#5aa9ff,#3ddc97)}
+.bar b{width:34px;text-align:right;font-size:14px}
+</style>
+</head>
+<body><div class="wrap">
+<h1>企业级 RAG 知识库</h1>
+<div class="sub">单向量库 + 元数据标签 + 双层存储 + 人工审核闸门 · 本地离线运行（intro v1）</div>
+
+<h2><span class="ic">🧭</span>这个技能是什么</h2>
+<div class="card">一个可直接落地的本地 RAG 知识库：把企业资料自动分类、打标签、切片、向量化，经过人工审核后进入正式检索。所有向量化和检索都在本机完成，不依赖云端 API，资料不出本机。</div>
+
+<h2><span class="ic">🛠</span>有什么作用</h2>
+<div class="card"><ul>
+<li><strong>统一知识库</strong>：同一份文档只入库一次，用标签区分客服、员工、宣传等使用场景，不用拆成多个向量库</li>
+<li><strong>自动分类打标</strong>：按 8 大企业内容领域分类，并推断用途、受众、密级、版本等元数据</li>
+<li><strong>可过滤检索</strong>：按领域、受众、密级、生效时间组合过滤，避免旧政策、内部机密被误检索出来</li>
+<li><strong>原文档案层</strong>：原始文件作为唯一可信源保留，检索结果带切片引用，可回原文核对</li>
+<li><strong>人工审核闸门</strong>：新资料默认进入「待审核」，批准后才进入正式检索，防止草稿和错误资料污染知识库</li>
+<li><strong>维护与过期清理</strong>：检查失效、密级、版本状态，定期清理过期内容</li>
+</ul></div>
+
+<h2><span class="ic">👥</span>能帮助谁 · 解决什么问题</h2>
+<div class="card"><div class="grid2">
+<div><strong>适合谁</strong><ul>
+<li>企业行政 / 知识管理负责人，需要把产品资料、制度、FAQ 统一检索</li>
+<li>客服团队，需要对外口径一致的检索库</li>
+<li>搭建内部员工助手、不想上云或不想维护多套向量库的团队</li></ul></div>
+<div><strong>解决什么</strong><ul>
+<li>📂 资料散落各处找不到 → 统一入库、切片、向量化，检索时按标签过滤</li>
+<li>🏢 客服/员工/宣传要不同内容 → 一份文档打静态标签，业务按标签过滤</li>
+<li>🚫 旧政策被误答出来 → expire_time 过滤过期内容</li>
+<li>🔒 内部制度漏到对外检索 → audience / security_level 两级过滤</li>
+<li>📝 草稿误入正式库 → 默认「待审核」闸门，人工批准后才可检索</li></ul></div>
+</div></div>
+
+<h2><span class="ic">📈</span>证据（真实运行数据）</h2>
+<div class="card">
+<em>以下数字由脚本直接解析本机示例库 index.json 与维护检查结果生成（3 份示例文档，共 3 条切片），非手填示意值。</em>
+<div style="margin-top:14px"><strong>领域分布</strong>
+<div class="bar"><span>产品与服务</span><div class="track"><div class="fill" style="width:360px"></div></div><b>1</b></div>
+<div class="bar"><span>内部管理制度</span><div class="track"><div class="fill" style="width:360px"></div></div><b>1</b></div>
+<div class="bar"><span>FAQ与历史问答</span><div class="track"><div class="fill" style="width:360px"></div></div><b>1</b></div>
+</div>
+<div style="margin-top:16px"><strong>切片状态分布</strong>
+<table><tr><th>状态</th><th>数量</th><th>占比</th></tr><tr><td>active</td><td><strong>3</strong> 条</td><td>100%</td></tr>
+<tr><td>pending</td><td><strong>0</strong> 条</td><td>0%</td></tr>
+<tr><td>rejected</td><td><strong>0</strong> 条</td><td>0%</td></tr></table></div>
+<ul style="margin-top:14px">
+<li>🎯 <strong>自动分类正确</strong>：产品介绍 → 产品与服务；考勤制度 → 内部管理制度；FAQ → FAQ与历史问答</li>
+<li>⏱ <strong>检索验证通过</strong>：按领域/受众过滤能命中正确切片，内部制度不会出现在对外过滤器结果中</li>
+<li>🔁 <strong>维护检查</strong>：3 条切片全部 active，无缺标签</li>
+</ul>
+</div>
+
+<h2><span class="ic">⚙️</span>功能核心点</h2>
+<div class="card"><table>
+<tr><th>核心机制</th><th>设计要点</th></tr>
+<tr><td>统一库 + 元数据标签</td><td>单向量库，通过 domain / usage_type / audience / security_level / effective_time / expire_time / doc_version 做业务隔离</td></tr>
+<tr><td>双层存储</td><td>原始文档档案层为唯一可信源，向量层只存切片、元数据与引用 ID，审核通过后才切片入库</td></tr>
+<tr><td>自动分类打标</td><td>关键词规则 + 本地向量相似度自动判断领域，推断不出的字段留空，不硬猜</td></tr>
+<tr><td>人工审核闸门</td><td>ingest 默认进待审核，review approve 批准后才可被普通检索命中</td></tr>
+<tr><td>检索过滤</td><td>CLI 支持 --domain、--audience 组合，按密级和时效做收敛</td></tr>
+<tr><td>维护检查</td><td>自动报告失效、缺标签、非 active 切片，便于定期巡检</td></tr>
+</table></div>
+
+<div class="foot">企业级 RAG 知识库 · 本页为技能 v1 介绍页，图表数据由脚本从真实运行台账/索引生成</div>
+</div></body></html>
